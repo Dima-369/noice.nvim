@@ -121,6 +121,13 @@ function M.open(opts)
         local lines = {}
         local message = entry.message
         
+        -- Debug: inspect the message structure
+        vim.notify("DEBUG: Original message content: " .. vim.inspect(message:content()))
+        vim.notify("DEBUG: Message opts: " .. vim.inspect(message.opts))
+        vim.notify("DEBUG: Message level: " .. vim.inspect(message.level))
+        vim.notify("DEBUG: Message event: " .. vim.inspect(message.event))
+        vim.notify("DEBUG: Message kind: " .. vim.inspect(message.kind))
+        
         -- Add title if it exists
         if message.opts and message.opts.title and message.opts.title ~= "" then
           table.insert(lines, message.opts.title)
@@ -134,6 +141,8 @@ function M.open(opts)
         
         -- Extract the clean content
         local content = clean_message:content()
+        vim.notify("DEBUG: Clean message content: " .. vim.inspect(content))
+        
         if content and content ~= "" then
           -- Split content by newlines and add each line
           for line in content:gmatch("[^\r\n]*") do
