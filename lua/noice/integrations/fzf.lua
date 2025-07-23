@@ -121,32 +121,24 @@ function M.open(opts)
         local lines = {}
         local message = entry.message
         
-        -- Debug: inspect the message structure
-        vim.notify("DEBUG: Original message content: " .. vim.inspect(message:content()))
-        vim.notify("DEBUG: Message opts: " .. vim.inspect(message.opts))
-        vim.notify("DEBUG: Message level: " .. vim.inspect(message.level))
-        vim.notify("DEBUG: Message event: " .. vim.inspect(message.event))
-        vim.notify("DEBUG: Message kind: " .. vim.inspect(message.kind))
-        
         -- Add title if it exists
         if message.opts and message.opts.title and message.opts.title ~= "" then
           table.insert(lines, message.opts.title)
           table.insert(lines, "") -- empty line separator
         end
         
-        -- Get just the message content using the message formatter
-        local clean_message = setmetatable({ _lines = {} }, { __index = message })
-        local Formatters = require("noice.text.format.formatters")
-        Formatters.message(clean_message, {}, message)
-        
-        -- Extract the clean content
-        local content = clean_message:content()
-        vim.notify("DEBUG: Clean message content: " .. vim.inspect(content))
-        
+        -- Get the raw content and trim away level/timestamp prefix
+        local content = message:content()
         if content and content ~= "" then
+          -- Remove level and timestamp prefix (e.g., "Info  21:57:32 ")
+          -- Pattern matches: optional spaces + level + spaces + time + space
+          local clean_content = content:gsub("^%s*%w+%s+%d+:%d+:%d+%s+", "")
+          
           -- Split content by newlines and add each line
-          for line in content:gmatch("[^\r\n]*") do
-            table.insert(lines, line)
+          for line in clean_content:gmatch("[^\r\n]*") do
+            if line ~= "" then -- skip empty lines
+              table.insert(lines, line)
+            end
           end
         end
         
