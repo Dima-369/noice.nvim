@@ -127,8 +127,13 @@ function M.open(opts)
           table.insert(lines, "") -- empty line separator
         end
         
-        -- Add message content
-        local content = message:content()
+        -- Get just the message content using the message formatter
+        local clean_message = setmetatable({ _lines = {} }, { __index = message })
+        local Formatters = require("noice.text.format.formatters")
+        Formatters.message(clean_message, {}, message)
+        
+        -- Extract the clean content
+        local content = clean_message:content()
         if content and content ~= "" then
           -- Split content by newlines and add each line
           for line in content:gmatch("[^\r\n]*") do
