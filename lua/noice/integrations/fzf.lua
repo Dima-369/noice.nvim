@@ -130,19 +130,12 @@ function M.open(opts)
         -- Get the raw content and trim away level/timestamp prefix
         local content = message:content()
         if content and content ~= "" then
-          -- Debug the exact content format
-          vim.notify("DEBUG: Raw content: '" .. content .. "'")
-          vim.notify("DEBUG: Content bytes: " .. vim.inspect({content:byte(1, #content)}))
-          
           -- Remove level and timestamp prefix (e.g., "Info  21:57:32 ")
-          -- Try different patterns to match the format
           local clean_content = content:gsub("^%s*%w+%s+%d+:%d+:%d+%s+", "")
-          vim.notify("DEBUG: After gsub: '" .. clean_content .. "'")
           
           -- If that didn't work, try a more flexible pattern
           if clean_content == content then
             clean_content = content:gsub("^.-(%d+:%d+:%d+)%s+", "")
-            vim.notify("DEBUG: After flexible gsub: '" .. clean_content .. "'")
           end
           
           -- Split content by newlines and add each line
