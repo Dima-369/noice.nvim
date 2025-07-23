@@ -117,7 +117,7 @@ function M.open(opts)
         vim.api.nvim_buf_set_keymap(buf, "n", "q", ":q<CR>", { silent = true })
         vim.api.nvim_buf_set_keymap(buf, "n", "<esc>", ":q<CR>", { silent = true })
 
-        local message = Format.format(entry.message, "fzf_preview")
+        local message = Format.format(entry.message, "notify")
         message:render(buf, Config.ns)
 
         local lines = vim.opt.lines:get()
