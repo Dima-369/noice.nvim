@@ -32,7 +32,7 @@ function M.entry(message)
 end
 
 function M.find()
-  local messages = Manager.get(Config.options.commands.history.filter, {
+  local messages = Manager.get(Config.options.commands.all.filter, {
     history = true,
     sort = true,
     reverse = true,

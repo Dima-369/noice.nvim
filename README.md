@@ -1,9 +1,12 @@
 # Fork changes
 
-- **Fixed `NoiceFzf` integration**: Now opens picked messages in a floating buffer (like `NoiceTelescope`)
-- **Enhanced buffer controls**: The message buffer can be closed with both `q` and `<esc>` keys
-- **Clean message display**: Shows only the message content and title (if present), without level/timestamp metadata for `NoiceFzf`
-- **Correct message ordering**: Messages now appear in reverse chronological order (most recent first)
+## About `NoiceFzf`
+
+- Now opens picked messages in a floating buffer (like `NoiceTelescope`)
+- The message buffer can be closed with both `q` and `<esc>` keys
+- Shows only the message content and title (if present), without level/timestamp metadata
+- Messages now appear in reverse chronological order (most recent first)
+- `NoiceFzf` now shows all messages (like `:Noice all`) including command output
 
 # Original README
 
