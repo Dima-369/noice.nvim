@@ -117,8 +117,26 @@ function M.open(opts)
         vim.api.nvim_buf_set_keymap(buf, "n", "q", ":q<CR>", { silent = true })
         vim.api.nvim_buf_set_keymap(buf, "n", "<esc>", ":q<CR>", { silent = true })
 
-        local message = Format.format(entry.message, "telescope_preview")
-        message:render(buf, Config.ns)
+        -- Custom rendering: title (if set) + newline + message
+        local lines = {}
+        local message = entry.message
+        
+        -- Add title if it exists
+        if message.opts and message.opts.title and message.opts.title ~= "" then
+          table.insert(lines, message.opts.title)
+          table.insert(lines, "") -- empty line separator
+        end
+        
+        -- Add message content
+        local content = message:content()
+        if content and content ~= "" then
+          -- Split content by newlines and add each line
+          for line in content:gmatch("[^\r\n]*") do
+            table.insert(lines, line)
+          end
+        end
+        
+        vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
 
         local lines = vim.opt.lines:get()
         local cols = vim.opt.columns:get()
