@@ -1,7 +1,8 @@
 # Fork changes
 
-- fix that `NoiceFzf` does not open the picked message in a buffer unlike `NoiceTelescope`
-- the buffer opened by `NoiceFzf` can be quit not only b `q`, but also by `<esc>`
+- **Fixed `NoiceFzf` integration**: Now opens picked messages in a floating buffer (like `NoiceTelescope`)
+- **Enhanced buffer controls**: The message buffer can be closed with both `q` and `<esc>` keys
+- **Clean message display**: Shows only the message content and title (if present), without level/timestamp metadata for `NoiceFzf`
 
 # Original README
 

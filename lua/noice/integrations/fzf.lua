@@ -39,12 +39,16 @@ function M.find()
   })
   ---@type table<number, NoiceEntry>
   local ret = {}
+  ---@type NoiceEntry[]
+  local ordered = {}
 
   for _, message in ipairs(messages) do
-    ret[message.id] = M.entry(message)
+    local entry = M.entry(message)
+    ret[message.id] = entry
+    table.insert(ordered, entry)
   end
 
-  return ret
+  return ret, ordered
 end
 
 ---@param messages table<number, NoiceEntry>
@@ -84,7 +88,7 @@ end
 
 ---@param opts? table<string, any>
 function M.open(opts)
-  local messages = M.find()
+  local messages, ordered = M.find()
   opts = vim.tbl_deep_extend("force", opts or {}, {
     prompt = false,
     winopts = {
@@ -172,7 +176,7 @@ function M.open(opts)
   })
   local lines = vim.tbl_map(function(entry)
     return entry.display
-  end, vim.tbl_values(messages))
+  end, ordered)
   return fzf.fzf_exec(lines, opts)
 end
 
