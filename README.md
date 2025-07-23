@@ -1,3 +1,10 @@
+# Fork changes
+
+- fix that `NoiceFzf` does not open the picked message in a buffer unlike `NoiceTelescope`
+- the buffer opened by `NoiceFzf` can be quit not only b `q`, but also by `<esc>`
+
+# Original README
+
 # 💥 Noice _(Nice, Noise, Notice)_
 
 Highly experimental plugin that completely replaces the UI for `messages`, `cmdline` and the `popupmenu`.

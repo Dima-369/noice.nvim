@@ -101,7 +101,45 @@ function M.open(opts)
       ["--with-nth"] = "2..",
     },
     actions = {
-      default = function() end,
+      default = function(selected, opts)
+        if not selected or #selected == 0 then
+          return
+        end
+        
+        local entry_str = selected[1]
+        local id = tonumber(entry_str:match("^%d+"))
+        local entry = messages[id]
+        if not entry then
+          return
+        end
+
+        local buf = vim.api.nvim_create_buf(false, true)
+        vim.api.nvim_buf_set_keymap(buf, "n", "q", ":q<CR>", { silent = true })
+        vim.api.nvim_buf_set_keymap(buf, "n", "<esc>", ":q<CR>", { silent = true })
+
+        local message = Format.format(entry.message, "fzf_preview")
+        message:render(buf, Config.ns)
+
+        local lines = vim.opt.lines:get()
+        local cols = vim.opt.columns:get()
+        local width = math.ceil(cols * 0.8)
+        local height = math.ceil(lines * 0.8 - 4)
+        local left = math.ceil((cols - width) * 0.5)
+        local top = math.ceil((lines - height) * 0.5)
+
+        local win = vim.api.nvim_open_win(buf, true, {
+          relative = "editor",
+          style = "minimal",
+          width = width,
+          height = height,
+          col = left,
+          row = top,
+          border = "rounded",
+        })
+
+        vim.api.nvim_win_set_option(win, "wrap", true)
+        vim.api.nvim_buf_set_option(buf, "modifiable", false)
+      end,
     },
   })
   local lines = vim.tbl_map(function(entry)
